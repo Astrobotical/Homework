@@ -253,16 +253,29 @@ button:hover{
         $.ajax({
             url: 'getfiles.php',
             type: 'GET',
-            success: function(data){
+            success: function (data) {
                 //console.log(data);
-                const obj = JSON.parse(data)
-                console.log(obj[0].ID);
-                for(var i = 0; i < obj.length; i++){
+                const obj = JSON.parse(data);
+                console.log(obj.ID);
+                if (obj.ID == "null") {
                     var option = document.createElement('option');
-                    option.c
-                    option.value = obj[i].ID;
-                    option.innerHTML = obj[i].FileName;
-                    selectedarea.append(option)
+                    option.setAttribute('id', 'None');
+                    option.value = 0;
+                    option.innerHTML = obj.message;
+                    selectedarea.append(option);
+                } else {
+                    var div = document.getElementById('None');
+                    if (typeof (div) != 'undefined' && div != null) {
+                        div.remove();
+                    } else {
+                        for (var i = 0; i < obj.length; i++) {
+                            var option = document.createElement('option');
+                            option.classList.add('classfiles');
+                            option.value = obj[i].ID;
+                            option.innerHTML = obj[i].FileName;
+                            selectedarea.append(option);
+                        }
+                    }
                 }
             }
         });
@@ -284,7 +297,6 @@ button:hover{
         alertify.alert('Alert Title', 'Alert Message!', function(){ alertify.success('Ok'); });
     }
     function Change(){
-
         const Check = document.getElementById("Check").selectedIndex;
         if(Check === 0) {
             $(A).hide();
@@ -329,9 +341,6 @@ button:hover{
             getfiles();
             $(button).show();
         }
-    }
-    function requestfiles(){
-        
     }
 </script>
 </body>

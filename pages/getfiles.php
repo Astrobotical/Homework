@@ -11,7 +11,6 @@ if(isset($checker)){
     $counter = 0;
     if($Result){
         foreach ($Result  as $Key) {
-                $counter++;
                 $ID = (string)$Key['ID'];
                 $FileName = $Key['FileName'];
                 $Subject = $Key['Subject'];
@@ -25,6 +24,11 @@ if(isset($checker)){
             }
         $responseJSON = json_encode($response);
         $_SESSION['files'] = $responseJSON;
+        echo $responseJSON;
+    }
+    else{
+        $return = array('ID' => 'null', 'message' => 'No files found');
+        $responseJSON = json_encode($return);
         echo $responseJSON;
     }
 }
