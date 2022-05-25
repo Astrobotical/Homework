@@ -40,16 +40,15 @@ $ConnectionString = $Objects->Connectionstring();
         global $Filetype, $Name, $Msg, $Subject,$folderPath;
         switch ($Filetype) {
             case "txt":
-
                 $Filetype = ".txt";
                 $Msg = $Msg . $Subject;
                 $Name = $Name . $Filetype;
                 if (strlen($Name) > 0) {
-                    $folderPath = 'files';
+                    $folderPath = 'files/Textfiles/';
                     if (!file_exists($folderPath)) {
                         mkdir($folderPath);
                     }
-                    $file = fopen( "$Name", "w");
+                    $file = fopen( $folderPath . DIRECTORY_SEPARATOR .$Name, "w");
                     if ($file != false) {
                         fwrite($file, $Msg);
                         saveCD($Name, $Subject);
@@ -66,7 +65,7 @@ $ConnectionString = $Objects->Connectionstring();
                     array($Subject, $Name, $Msg)
                 );
                 if (strlen($Name) > 0) {
-                    $folderPath = 'files';
+                    $folderPath = 'files/Csvfiles/';
                     if (!file_exists($folderPath)) {
                         mkdir($folderPath);
                     }
