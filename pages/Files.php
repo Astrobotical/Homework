@@ -238,7 +238,6 @@ button:hover{
     <tr class = "A">
         <td colspan="2"><textarea id="Msg" col name="Msg" placeholder="Enter the msg"></textarea></td></tr>
     <tr class = "B">
-
     </tr>
     <tr class = "go">
         <td class = "go"><button type="submit" name="submit" </button>Send</td></tr>
@@ -248,8 +247,8 @@ button:hover{
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 <script>
-    function getfiles(){
-        var  selectedarea = document.getElementById("files");
+    function getfiles() {
+        var selectedarea = document.getElementById("files");
         $.ajax({
             url: 'getfiles.php',
             type: 'GET',
@@ -280,6 +279,10 @@ button:hover{
             }
         });
     }
+    function deleteelemetns() {
+        const div2 = document.querySelectorAll('.classfiles');
+        if (typeof (div2) != 'undefined' && div2 != null) {
+            div2.forEach(obj => {obj.remove();});}}
     var A =document.querySelectorAll(".A");
     var B = document.querySelectorAll(".B");
     var C = document.querySelectorAll(".C");
@@ -331,6 +334,7 @@ button:hover{
             $(B).show();
             $(C).hide();
             $(D).show();
+            deleteelemetns();
             getfiles();
             $(button).show();
         } else if (Next === 2) {
@@ -338,6 +342,7 @@ button:hover{
             $(B).show();
             $(C).show();
             $(D).show();
+            deleteelemetns();
             getfiles();
             $(button).show();
         }

@@ -7,7 +7,6 @@ if(isset($checker)){
     $Query = "Select * from files";
     $Result = $object ->runQuery($Query);
     $response = array();
-
     $counter = 0;
     if($Result){
         foreach ($Result  as $Key) {
