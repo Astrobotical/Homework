@@ -11,7 +11,8 @@ $ConnectionString = $Objects->Connectionstring();
     $A = null;
     $Filetype = filter_input(INPUT_POST, 'Type', FILTER_SANITIZE_STRING);
     $FileChange = filter_input(INPUT_POST, 'Exist', FILTER_SANITIZE_STRING);
-    $files = filter_input(INPUT_POST, 'files', FILTER_SANITIZE_STRING);
+  //  $Files = filter_input(INPUT_POST, 'files', FILTER_SANITIZE_STRING);
+    $Files= filter_input(INPUT_POST, 'Files1', FILTER_SANITIZE_STRING);
     function savefile()
     {
             global $Message;
@@ -83,14 +84,13 @@ $ConnectionString = $Objects->Connectionstring();
         }
     }
      function getfile(){
-         global $files;
+         global $Files;
          $jsonData = json_decode($_SESSION['files'] ,true);
-         //print_r($jsonData[1]['Location']);
-         for( $i = 0; $i < count($jsonData); $i++){
-             if($jsonData[$i]['ID'] == $files){
-
-                  $files = $jsonData[i]['Location'];
-                 $File = fopen($jsonData[i]['Location'] ,"r") or die("Unable to open file!");
+         echo $Files;
+         foreach($jsonData as $key => $value){
+             if($Files == (string)$value['ID']){
+                  $Files = $value['Location'];
+                 $File = fopen($Files,"r") or die("Unable to open file!");
                  while (!feof($File)){
                      $data = fgets($File);
                      echo "<br>".$data;
@@ -98,15 +98,17 @@ $ConnectionString = $Objects->Connectionstring();
                  fclose($File);
                  break;
              }
+             // $i++;
          }
     }
     function FileReading()
     {
-        global $files;
-        //$file = getfile();
-        getfile();
-       // print_r($file);
-      /*  $File = fopen("$files" ,"r");
+        global $Files;
+        $file = getfile();
+        //getfile();
+        /*
+        print_r($file);
+        $File = fopen("files/Csvfiles/1.csv" ,"r");
         while (!feof($File)){
             $data = fgets($File);
             echo "<br>".$data;
@@ -115,15 +117,20 @@ $ConnectionString = $Objects->Connectionstring();
     }
     function appendFile()
     {
-        global $files,$Msg;
-        $file = fopen("$files", "a+") or die("File not found!");
-        $content = $Msg;
-        fwrite($file, $content);
+        global $Files, $Msg;
+        $jsonData = json_decode($_SESSION['files'], true);
+        echo $Files;
+        foreach ($jsonData as $key => $value) {
+            if ($Files == (string)$value['ID']) {
+                $Files = $value['Location'];
+                $file = fopen("$Files", "a+") or die("File not found!");
+                $content = $Msg;
+                fwrite($file, $content);
+                echo fread($file, filesize($Files));
+                fclose($file);
 
-        echo fread($file, filesize($files));
-
-        fclose($file);
-
+            }
+        }
     }
     function Editfile()
     {
@@ -216,7 +223,8 @@ button:hover{
     </tr>
     <tr class ="D">
         <td class ="D"><label for ="files">Choose the file: </label>
-            <td class="D"> <select name=files" id="files" >
+            <td class="D"> <select name="Files1" id="files" >
+                <!-- <option value="13">igh.txt</option> -->
             </select>
         </td>
 
@@ -256,6 +264,7 @@ button:hover{
                 //console.log(data);
                 const obj = JSON.parse(data);
                 console.log(obj.ID);
+                console.table(obj);
                 if (obj.ID == "null") {
                     var option = document.createElement('option');
                     option.setAttribute('id', 'None');
@@ -269,7 +278,7 @@ button:hover{
                     } else {
                         for (var i = 0; i < obj.length; i++) {
                             var option = document.createElement('option');
-                            option.classList.add('classfiles');
+                            //option.classList.add('classfiles');
                             option.value = obj[i].ID;
                             option.innerHTML = obj[i].FileName;
                             selectedarea.append(option);
